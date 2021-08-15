@@ -16,22 +16,22 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async getImagesFromPixabay({dispatch}){
+    async getImagesFromPixabay({dispatch}, params){
       const config = {
         method: 'GET',
         url: 'https://pixabay.com/api/',
         params: {
           "key": connect.pixabayApiKey,
-          "q": 'cats',
-          "image_type": 'all',
-          "per_page": 100
+          "q": params.q,
+          "image_type": params.imageType,
+          "per_page": params.perPage
         }
       }
       try {
         const res = await axios(config);
         const images = res?.data || {};
         dispatch('setImagesObject', { data: images })
-        return images
+        return images || {}
       } catch (e) {
         console.log(e)
         return {}
